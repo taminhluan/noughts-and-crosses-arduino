@@ -13,8 +13,18 @@
 
 char board[BOARD_SIZE][BOARD_SIZE];
 
+enum STEP {
+    HUMAN,
+    AI
+};
+
+char currentStep = HUMAN;
+
 void initBoard(void);
 void drawBoard(char board[BOARD_SIZE][BOARD_SIZE]);
+
+void humanInput(void);
+void aiInput(void);
 
 void initBoard() {
     for (int i = 0; i < BOARD_SIZE; i++) {
@@ -33,13 +43,38 @@ void drawBoard(char board[BOARD_SIZE][BOARD_SIZE]) {
     }
 }
 
+void humanInput() {
+    printf("\nHUMAN: x y: \n");
+    int x, y;
+    
+    scanf("%d %d", &x, &y);
+    board[x][y] = CHARACTER_NOUGHT; //Fix hardcode in here
+}
+
+void aiInput() {
+//    calculate();
+    printf("\nAI: x y \n");
+    
+}
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     printf("Welcome to play noughts and crosses!\n");
     initBoard();
     
-    board[0][0] = CHARACTER_CROSS;
-    board[0][1] = CHARACTER_NOUGHT;
     drawBoard(board);
+    
+    while (1) {
+        if (currentStep == HUMAN) {
+            humanInput();
+            currentStep = AI;
+        } else {
+            aiInput();
+            currentStep = HUMAN;
+        }
+        
+        drawBoard(board);
+        
+    }
     return 0;
 }
