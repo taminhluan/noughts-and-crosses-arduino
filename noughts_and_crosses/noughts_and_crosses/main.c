@@ -5,7 +5,7 @@
 //  Created by Luan Ta on 1/26/20.
 //  Copyright © 2020 Ta Minh Luan. All rights reserved.
 //
-#define BOARD_SIZE          50
+#define BOARD_SIZE          20
 #define CHARACTER_DEFAULT   ' '
 #define CHARACTER_CROSS     'x'
 #define CHARACTER_NOUGHT    'o'
@@ -25,6 +25,7 @@ void drawBoard(char board[BOARD_SIZE][BOARD_SIZE]);
 
 void humanInput(void);
 void aiInput(void);
+char checkWin(void);
 
 void initBoard() {
     for (int i = 0; i < BOARD_SIZE; i++) {
@@ -44,17 +45,43 @@ void drawBoard(char board[BOARD_SIZE][BOARD_SIZE]) {
 }
 
 void humanInput() {
-    printf("\nHUMAN: x y: \n");
+    printf("\nHUMAN (%c): x y: \n", CHARACTER_NOUGHT);
     int x, y;
+    do {
+//        TODO try catch
+        scanf("%d %d", &x, &y);
+    } while (board[x][y] != CHARACTER_DEFAULT);
     
-    scanf("%d %d", &x, &y);
     board[x][y] = CHARACTER_NOUGHT; //Fix hardcode in here
 }
 
 void aiInput() {
 //    calculate();
-    printf("\nAI: x y \n");
+    printf("\nAI (%c): x y \n", CHARACTER_CROSS);
     
+}
+
+/*
+ * return CHARACTER_...
+ */
+char checkWin() {
+    for (int i = 0; i < BOARD_SIZE - 4; i ++) {
+        for (int j = 0; j < BOARD_SIZE - 4; j ++) {
+            if (board[i][j] == CHARACTER_DEFAULT) {
+                continue;
+            }
+            
+            if (
+                (board[i][j] == board[i][j + 1] && board[i][j] == board[i][j + 2] && board[i][j] == board[i][j + 3] && board[i][j] == board[i][j + 4])
+                || (board[i][j] == board[i + 1][j] && board[i][j] == board[i + 2][j] && board[i][j] == board[i + 3][j] && board[i][j] == board[i + 4][j])
+                || (board[i][j] == board[i + 1][j + 1] && board[i][j] == board[i + 2][j + 2] && board[i][j] == board[i + 3][j + 3] && board[i][j] == board[i + 4][j + 4])
+                )
+            {
+                return board[i][j];
+            }
+        }
+    }
+    return CHARACTER_DEFAULT;
 }
 
 int main(int argc, const char * argv[]) {
@@ -74,6 +101,16 @@ int main(int argc, const char * argv[]) {
         }
         
         drawBoard(board);
+        
+        char winner = checkWin();
+        
+        if (winner == CHARACTER_NOUGHT) {
+            printf("\nHUMAN(%c) Win\n", CHARACTER_NOUGHT);
+            break;
+        } else if (winner == CHARACTER_CROSS) {
+            printf("\nAI(%c) win\n", CHARACTER_CROSS);
+            break;
+        }
         
     }
     return 0;
