@@ -154,7 +154,6 @@ int maxDefendScore = 0;
 int attackScoreBoard[BOARD_SIZE][BOARD_SIZE];
 int maxAttackScore = 0;
 
-int weights[6] =  {0, 20, 17, 15.4, 14, 10};
 
 
 /*
@@ -309,8 +308,14 @@ struct point getBestMove() {
     return result;
 }
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
+
+void setup() {
+  // put your setup code here, to run once:
+
+}
+
+void loop() {
+  // insert code here...
     printf("Welcome to play noughts and crosses!\n");
     initBoard();
     
@@ -338,5 +343,6 @@ int main(int argc, const char * argv[]) {
         }
         
     }
-    return 0;
+  // put your main code here, to run repeatedly:
+
 }
