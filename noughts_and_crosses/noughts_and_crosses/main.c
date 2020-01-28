@@ -5,7 +5,7 @@
 //  Created by Luan Ta on 1/26/20.
 //  Copyright © 2020 Ta Minh Luan. All rights reserved.
 //
-#define BOARD_SIZE          20
+#define BOARD_SIZE          15
 #define CHARACTER_DEFAULT   ' '
 #define CHARACTER_CROSS     'x'
 #define CHARACTER_NOUGHT    'o'
@@ -26,6 +26,12 @@ void drawBoard(char board[BOARD_SIZE][BOARD_SIZE]);
 void humanInput(void);
 void aiInput(void);
 char checkWin(void);
+/*
+ * iStep, jStep - direction: (-1, -1), (1, 0) ...
+ */
+char checkWinWithDirection(char i, char j, char iStep, char jStep);
+
+char checkLegalMove(char i, char j);
 
 void initBoard() {
     for (int i = 0; i < BOARD_SIZE; i++) {
@@ -65,23 +71,66 @@ void aiInput() {
  * return CHARACTER_...
  */
 char checkWin() {
-    for (int i = 0; i < BOARD_SIZE - 4; i ++) {
-        for (int j = 0; j < BOARD_SIZE - 4; j ++) {
-            if (board[i][j] == CHARACTER_DEFAULT) {
-                continue;
-            }
-            
-            if (
-                (board[i][j] == board[i][j + 1] && board[i][j] == board[i][j + 2] && board[i][j] == board[i][j + 3] && board[i][j] == board[i][j + 4])
-                || (board[i][j] == board[i + 1][j] && board[i][j] == board[i + 2][j] && board[i][j] == board[i + 3][j] && board[i][j] == board[i + 4][j])
-                || (board[i][j] == board[i + 1][j + 1] && board[i][j] == board[i + 2][j + 2] && board[i][j] == board[i + 3][j + 3] && board[i][j] == board[i + 4][j + 4])
-                )
-            {
-                return board[i][j];
+    for (char i = 0; i < BOARD_SIZE; i ++ ) {
+        for (char j = 0; j < BOARD_SIZE; j++) {
+            if (board[i][j] != CHARACTER_DEFAULT) {
+                for (char iStep = -1; iStep <= 1; iStep++) {
+                    for (char jStep = -1; jStep <= 1; jStep ++)
+                    {
+                        char isWin = checkWinWithDirection(i, j, iStep, jStep);
+                        if (isWin) {
+                            return board[i][j];
+                        } else {
+                            continue;
+                        }
+                    }
+                }
             }
         }
     }
+    
+    
+    
     return CHARACTER_DEFAULT;
+}
+
+/*
+ * return 1: win
+ * return 0: not win
+ */
+char checkWinWithDirection(char i, char j, char iStep, char jStep) {
+    if (iStep == 0 && jStep == 0) return 0;
+    if (!checkLegalMove(i + iStep*4, j + jStep*4) ) return 0;
+    
+    for (char step = 1; step <= 4; step++) {
+        if (board[i][j] != board[i + iStep*step][j + step*jStep] ) {
+            return 0;
+        }
+    }
+    
+    // check stuck at begin and end
+    if (checkLegalMove(i - 1 * iStep, j - 1 * jStep)) {
+        if (board[i - 1 * iStep][j - 1 * jStep] != CHARACTER_DEFAULT) {
+            if (checkLegalMove(i + 5 * iStep, j + 5 * jStep)) {
+                if (board[i - 1 * iStep][j - 1 * jStep] != CHARACTER_DEFAULT) {
+                    return 0;
+                }
+            }
+        }
+    }
+    return 1;
+}
+
+/*
+ * return 1: legal move
+ * return 0:
+ */
+char checkLegalMove(char i, char j) {
+    if (i >= 0 && i < BOARD_SIZE && j >= 0 && j < BOARD_SIZE) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 int main(int argc, const char * argv[]) {

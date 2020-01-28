@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "checkWinWithDirection:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "i - 1* iStep">
+            </PersistentString>
+            <PersistentString
+               value = "board[i][j] != board[i + iStep*step][j + j*jStep]">
+            </PersistentString>
+            <PersistentString
+               value = "j - 1*jStep">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "checkWin:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "board[0][0] != &apos; &apos;">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
