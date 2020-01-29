@@ -76,11 +76,13 @@ void humanInput() {
 }
 
 void aiInput() {
-    printf("\nAI (%c): x y \n", CHARACTER_CROSS);
+    
     
     struct point bestMove = getBestMove();
     
     board[bestMove.x][bestMove.y] = CHARACTER_CROSS;
+    
+    printf("\nAI (%c): %d %d \n", CHARACTER_CROSS, bestMove.x, bestMove.y);
     
 }
 
